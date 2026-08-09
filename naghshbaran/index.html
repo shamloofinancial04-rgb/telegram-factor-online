@@ -1,4 +1,4 @@
-  <!doctype html>
+<!doctype html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8" />
@@ -47,9 +47,25 @@
     max-height:calc(100vh - 36px);
     overflow-y:auto;
   }
-  .panel-head { padding:20px 22px 14px; border-bottom:1px solid #edf0f3; }
+  .panel-head { padding:16px 18px; border-bottom:1px solid #edf0f3; }
+  .panel-head-row { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
   .panel-head h1 { margin:0 0 6px; font-size:20px; }
   .panel-head p { margin:0; color:var(--muted); font-size:12px; line-height:1.9; }
+  .settings-open-btn {
+    flex:0 0 auto;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border:1px solid #cfd9d6;
+    border-radius:10px;
+    background:#f7faf9;
+    color:#244b42;
+    padding:9px 11px;
+    font-size:11px;
+    font-weight:800;
+    cursor:pointer;
+  }
+  .settings-open-btn:hover { border-color:var(--accent); background:#edf7f4; }
   .form-body { padding:17px 22px 22px; }
 
   .doc-switch {
@@ -344,7 +360,116 @@
   .toast.error { background:#8f251c; }
   .storage-loading { opacity:.7; pointer-events:none; }
 
+  .customer-details {
+    margin-top:9px;
+    border:1px solid #dfe7e4;
+    border-radius:10px;
+    background:#f8fbfa;
+    overflow:hidden;
+  }
+  .customer-details > summary {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 11px;
+    cursor:pointer;
+    list-style:none;
+    font-size:11px;
+    font-weight:800;
+    color:#244b42;
+  }
+  .customer-details > summary::-webkit-details-marker { display:none; }
+  .customer-details > summary::after {
+    content:'＋';
+    flex:0 0 auto;
+    font-size:15px;
+    line-height:1;
+    color:#47766b;
+  }
+  .customer-details[open] > summary::after { content:'−'; }
+  .customer-details > summary small {
+    margin-right:auto;
+    color:var(--muted);
+    font-size:9px;
+    font-weight:500;
+  }
+  .customer-details-content {
+    padding:11px;
+    border-top:1px solid #e5ece9;
+    background:#fff;
+  }
+
+  .settings-modal[hidden] { display:none !important; }
+  .settings-modal {
+    position:fixed;
+    inset:0;
+    z-index:10050;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+  }
+  .settings-backdrop {
+    position:absolute;
+    inset:0;
+    background:rgba(15,23,42,.52);
+    backdrop-filter:blur(3px);
+  }
+  .settings-dialog {
+    position:relative;
+    z-index:1;
+    width:min(620px, 100%);
+    max-height:min(88vh, 820px);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 24px 70px rgba(15,23,42,.28);
+  }
+  .settings-dialog-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:16px 18px;
+    border-bottom:1px solid #e7ecea;
+    background:#f8fbfa;
+  }
+  .settings-dialog-head h2 { margin:0 0 4px; font-size:17px; }
+  .settings-dialog-head p { margin:0; color:var(--muted); font-size:10px; }
+  .settings-close-btn {
+    width:36px;
+    height:36px;
+    border:1px solid #d7e0dd;
+    border-radius:10px;
+    background:#fff;
+    color:#344b45;
+    font-size:24px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .settings-dialog-body {
+    overflow:auto;
+    padding:14px;
+    overscroll-behavior:contain;
+  }
+  body.settings-open { overflow:hidden; }
+
   @media (max-width:560px) {
+    .panel-head-row { align-items:center; }
+    .panel-head p { display:none; }
+    .settings-open-btn { padding:8px 9px; }
+    .customer-details > summary { align-items:flex-start; flex-wrap:wrap; }
+    .customer-details > summary small { width:100%; margin:2px 0 0; }
+    .settings-modal { align-items:flex-end; padding:0; }
+    .settings-dialog {
+      width:100%;
+      max-height:92vh;
+      border-radius:18px 18px 0 0;
+    }
+    .settings-dialog-head { padding:14px 16px; }
     .profile-buttons { grid-template-columns:1fr; }
     .storage-actions, .stamp-actions { grid-template-columns:1fr; }
   }
@@ -619,6 +744,12 @@
     font-weight:800;
     position:relative;
   }
+  .signature-box.seller-signature-disabled {
+    visibility:hidden;
+  }
+  .seller-stamp[hidden] {
+    display:none !important;
+  }
   .seller-stamp {
     display:block;
     margin:2mm auto 0;
@@ -633,6 +764,219 @@
     .app { display:block; padding:14px; }
     .panel { position:relative; top:auto; max-width:820px; margin:0 auto 18px; max-height:none; }
     .preview-shell { min-width:0; overflow:auto; padding-bottom:20px; }
+  }
+
+
+  /* ---------- رابط ساده و متمرکز ---------- */
+  .main-fields { margin-bottom:10px; }
+  .compact-profile {
+    margin:0 0 14px;
+    padding:11px;
+    border-color:#dbe5e1;
+    background:#f8fbfa;
+  }
+  .compact-profile .profile-select-row { grid-template-columns:1fr; }
+  .profile-advanced {
+    margin-top:8px;
+    border-top:1px solid #e6ece9;
+    padding-top:7px;
+  }
+  .profile-advanced summary {
+    cursor:pointer;
+    color:#52605c;
+    font-size:10px;
+    font-weight:700;
+    user-select:none;
+  }
+  .profile-advanced .profile-buttons { margin-top:8px; }
+
+  details.app-settings {
+    margin:0 0 16px;
+    border:1px solid #dce5e2;
+    border-radius:13px;
+    background:#fbfcfc;
+    overflow:hidden;
+  }
+  details.app-settings > summary {
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:12px 13px;
+    list-style:none;
+    font-size:11.5px;
+    font-weight:800;
+    color:#31443f;
+    user-select:none;
+  }
+  details.app-settings > summary::-webkit-details-marker { display:none; }
+  details.app-settings > summary::after {
+    content:'＋';
+    width:23px;
+    height:23px;
+    display:grid;
+    place-items:center;
+    border-radius:8px;
+    background:#edf5f2;
+    color:#155e54;
+    font-size:15px;
+    line-height:1;
+  }
+  details.app-settings[open] > summary::after { content:'−'; }
+  .settings-subtitle {
+    display:block;
+    margin-top:2px;
+    color:#7a8682;
+    font-size:9.5px;
+    font-weight:400;
+  }
+  .settings-content {
+    padding:0 12px 13px;
+    border-top:1px solid #edf0ef;
+  }
+  .settings-content .storage-card { margin-top:12px; }
+  .settings-section {
+    padding:12px;
+    border:1px solid #e5e9ee;
+    border-radius:12px;
+    background:#fbfcfc;
+    margin-top:12px;
+  }
+  .settings-section:first-child { margin-top:0; }
+  .settings-section-head {
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:12px;
+    padding-bottom:9px;
+    border-bottom:1px solid #edf0f3;
+  }
+  .settings-section-head strong { font-size:11.5px; }
+  .settings-section-head span {
+    max-width:64%;
+    color:var(--muted);
+    font-size:9.5px;
+    line-height:1.65;
+    text-align:left;
+  }
+  .settings-actions {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:12px;
+  }
+  .settings-actions .btn { padding:10px; font-size:11px; }
+  .settings-actions .btn.ghost { grid-column:auto; }
+
+  .item-card { padding:12px; background:#fff; }
+  .item-card-head { margin-bottom:10px; }
+  .item-advanced {
+    grid-column:1/-1;
+    border-top:1px dashed #d7dfdc;
+    margin-top:2px;
+    padding-top:7px;
+  }
+  .item-advanced summary {
+    cursor:pointer;
+    color:#5e6b67;
+    font-size:10.5px;
+    font-weight:700;
+    user-select:none;
+  }
+  .item-advanced-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:8px;
+  }
+  .item-advanced-grid .wide { grid-column:1/-1; }
+
+  .form-check-summary {
+    position:sticky;
+    bottom:72px;
+    z-index:8;
+    box-shadow:0 8px 22px rgba(15,23,42,.08);
+  }
+  .actions.simple-actions {
+    grid-template-columns:.85fr 1.25fr;
+    position:sticky;
+    bottom:0;
+    z-index:10;
+    margin:16px -22px -22px;
+    padding:12px 22px calc(12px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.96);
+    border-top:1px solid #e7ecea;
+    backdrop-filter:blur(12px);
+  }
+  .actions.simple-actions .btn { min-height:44px; }
+  .preview-close {
+    display:none;
+    position:fixed;
+    z-index:10002;
+    top:calc(10px + env(safe-area-inset-top));
+    left:12px;
+    border:0;
+    border-radius:10px;
+    padding:9px 13px;
+    background:#17211d;
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  @media (max-width:1180px) {
+    .app { padding:10px; }
+    .panel { margin-bottom:0; border-radius:14px; }
+    .panel-head { padding:16px 16px 11px; }
+    .panel-head p { display:none; }
+    .form-body { padding:14px 16px 18px; }
+    .row-fields { grid-template-columns:1fr; gap:0; }
+    body[data-mode="factor"] .main-fields { grid-template-columns:1fr 1fr; gap:8px; }
+    body[data-mode="factor"] .main-fields .field:last-child { grid-column:1/-1; }
+    .item-grid { grid-template-columns:1fr 1fr; }
+    .item-advanced-grid { grid-template-columns:1fr; }
+    .item-advanced-grid .wide { grid-column:auto; }
+    .form-check-summary { bottom:77px; }
+    .actions.simple-actions {
+      margin:14px -16px -18px;
+      padding-right:16px;
+      padding-left:16px;
+    }
+    .hint { display:none; }
+
+    /* در موبایل پیش‌نمایش فقط با دکمه باز می‌شود. */
+    .preview-shell { display:none; }
+    body.preview-open { overflow:hidden !important; }
+    body.preview-open .preview-shell {
+      display:block;
+      position:fixed;
+      z-index:10000;
+      inset:0;
+      padding:58px 10px 24px;
+      overflow:auto;
+      background:#e9eeec;
+    }
+    body.preview-open .preview-close { display:block; }
+    body.preview-open .preview-label {
+      display:block;
+      margin:0 0 10px;
+      text-align:center;
+      color:#34433e;
+      font-weight:700;
+    }
+    body.preview-open .paper-wrap { box-shadow:0 12px 35px rgba(15,23,42,.20); }
+  }
+
+  @media (max-width:560px) {
+    .doc-switch { margin-bottom:13px; }
+    .item-grid { grid-template-columns:1fr 1fr; }
+    .item-grid .wide { grid-column:1/-1; }
+    .row-live-total { grid-column:1/-1; }
+    .settings-actions { grid-template-columns:1fr; }
+    .actions.simple-actions { grid-template-columns:.8fr 1.2fr; }
   }
 
   @media print {
@@ -682,8 +1026,16 @@
 <div class="app">
   <section class="panel">
     <div class="panel-head">
-      <h1 id="formTitle">سازنده پیش‌فاکتور</h1>
-      <p id="formSubtitle">اطلاعات را وارد کنید؛ مبلغ هر ردیف و جمع کل خودکار محاسبه می‌شود.</p>
+      <div class="panel-head-row">
+        <div>
+          <h1 id="formTitle">سازنده پیش‌فاکتور</h1>
+          <p id="formSubtitle">اطلاعات را وارد کنید؛ مبلغ هر ردیف و جمع کل خودکار محاسبه می‌شود.</p>
+        </div>
+        <button class="settings-open-btn" id="settingsOpenBtn" type="button" aria-haspopup="dialog" aria-controls="settingsModal">
+          <span aria-hidden="true">⚙</span>
+          تنظیمات
+        </button>
+      </div>
     </div>
 
     <div class="form-body">
@@ -693,20 +1045,7 @@
       </div>
 
 
-      <div class="storage-card" id="storageCard">
-        <div class="storage-card-head">
-          <span class="storage-card-title">ذخیره اطلاعات شرکت‌ها</span>
-          <span class="storage-badge" id="storageBadge">در حال اتصال…</span>
-        </div>
-        <div class="storage-actions">
-          <button class="profile-btn" id="exportBackupBtn" type="button">دریافت فایل پشتیبان</button>
-          <button class="profile-btn" id="importBackupBtn" type="button">بازیابی فایل پشتیبان</button>
-        </div>
-        <input id="backupFileInput" type="file" accept="application/json,.json" hidden />
-        <span class="profile-help">داخل تلگرام، مشخصات شرکت‌ها در CloudStorage همان حساب ذخیره می‌شود. بیرون تلگرام، ذخیره‌سازی مرورگر استفاده می‌شود.</span>
-      </div>
-
-      <div class="row-fields">
+      <div class="row-fields main-fields">
         <div class="field">
           <label for="invoiceDate">تاریخ</label>
           <input id="invoiceDate" type="text" value="1404/10/10" placeholder="مثلاً 1405/05/18" />
@@ -716,127 +1055,48 @@
           <input id="invoiceNumber" type="text" placeholder="مثلاً 452" />
         </div>
         <div class="field">
-          <label for="customer" id="customerLabel">نام مشتری یا شرکت</label>
-          <input id="customer" type="text" value="شرکت آمده لذیذ" placeholder="نام مشتری / شرکت" />
+          <label for="customer" id="customerLabel">نام خریدار</label>
+          <input id="customer" type="text" value="شرکت آمده لذیذ" placeholder="نام خریدار" />
         </div>
       </div>
 
-
-      <div class="profile-manager" id="buyerProfileManager">
-        <label for="buyerProfileSelect">مشتری / خریدار ذخیره‌شده</label>
+      <div class="profile-manager compact-profile invoice-only" id="buyerProfileManager">
+        <label for="buyerProfileSelect">خریدار ذخیره‌شده</label>
         <div class="profile-select-row">
           <select id="buyerProfileSelect">
-            <option value="">انتخاب از فهرست ذخیره‌شده</option>
+            <option value="">انتخاب خریدار ذخیره‌شده</option>
           </select>
-          <button class="profile-btn primary-soft" id="newBuyerProfileBtn" type="button">جدید</button>
         </div>
-        <div class="profile-buttons">
-          <button class="profile-btn" id="saveBuyerProfileBtn" type="button">ذخیره اطلاعات فعلی</button>
-          <button class="profile-btn" id="updateBuyerProfileBtn" type="button" disabled>به‌روزرسانی</button>
-          <button class="profile-btn danger" id="deleteBuyerProfileBtn" type="button" disabled>حذف</button>
-        </div>
-      </div>
 
-      <div class="invoice-only">
-        <details class="meta-box" open>
-          <summary>مشخصات فروشنده</summary>
-          <div class="details-body">
-            <div class="profile-manager">
-              <label for="sellerProfileSelect">فروشنده ذخیره‌شده</label>
-              <div class="profile-select-row">
-                <select id="sellerProfileSelect">
-                  <option value="">انتخاب از فهرست ذخیره‌شده</option>
-                </select>
-                <button class="profile-btn primary-soft" id="newSellerProfileBtn" type="button">جدید</button>
-              </div>
-              <div class="profile-buttons">
-                <button class="profile-btn" id="saveSellerProfileBtn" type="button">ذخیره اطلاعات فعلی</button>
-                <button class="profile-btn" id="updateSellerProfileBtn" type="button" disabled>به‌روزرسانی</button>
-                <button class="profile-btn danger" id="deleteSellerProfileBtn" type="button" disabled>حذف</button>
-              </div>
-
-            </div>
+        <details class="customer-details invoice-only" id="buyerDetails">
+          <summary>
+            <span>اطلاعات و نشانی خریدار</span>
+            <small>نام، شناسه‌ها، کد پستی و نشانی</small>
+          </summary>
+          <div class="customer-details-content">
             <div class="field">
-              <label for="sellerName">نام شخص حقیقی/حقوقی</label>
-              <input id="sellerName" type="text" />
+              <label for="buyerNameDetail">نام خریدار</label>
+              <input id="buyerNameDetail" type="text" placeholder="نام خریدار" autocomplete="organization" />
             </div>
             <div class="row-fields">
-              <div class="field">
-                <label for="sellerEconomic">شماره اقتصادی</label>
-                <input id="sellerEconomic" type="text" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="sellerRegistration">شماره ثبت</label>
-                <input id="sellerRegistration" type="text" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="sellerPostal">کد پستی ده‌رقمی</label>
-                <input id="sellerPostal" type="text" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="sellerNational">شناسه ملی</label>
-                <input id="sellerNational" type="text" inputmode="numeric" />
-              </div>
+              <div class="field"><label for="buyerEconomic">شماره اقتصادی</label><input id="buyerEconomic" type="text" inputmode="numeric" /></div>
+              <div class="field"><label for="buyerRegistration">شماره ثبت</label><input id="buyerRegistration" type="text" inputmode="numeric" /></div>
+              <div class="field"><label for="buyerPostal">کد پستی ده‌رقمی</label><input id="buyerPostal" type="text" inputmode="numeric" /></div>
+              <div class="field"><label for="buyerNational">شناسه ملی</label><input id="buyerNational" type="text" inputmode="numeric" /></div>
             </div>
-            <div class="field">
-              <label for="sellerPhone">شماره تماس</label>
-              <input id="sellerPhone" type="text" />
-            </div>
-            <div class="field">
-              <label for="sellerAddress">نشانی</label>
-              <textarea id="sellerAddress"></textarea>
-            </div>
+            <div class="field"><label for="buyerAddress">نشانی خریدار</label><textarea id="buyerAddress" placeholder="نشانی کامل خریدار یا محل صدور فاکتور"></textarea></div>
           </div>
         </details>
 
-        <details class="meta-box">
-          <summary>مشخصات خریدار</summary>
-          <div class="details-body">
-            <div class="row-fields">
-              <div class="field">
-                <label for="buyerEconomic">شماره اقتصادی</label>
-                <input id="buyerEconomic" type="text" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="buyerRegistration">شماره ثبت</label>
-                <input id="buyerRegistration" type="text" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="buyerPostal">کد پستی ده‌رقمی</label>
-                <input id="buyerPostal" type="text" inputmode="numeric" />
-              </div>
-              <div class="field">
-                <label for="buyerNational">شناسه ملی</label>
-                <input id="buyerNational" type="text" inputmode="numeric" />
-              </div>
-            </div>
-            <div class="field">
-              <label for="buyerAddress">نشانی</label>
-              <textarea id="buyerAddress"></textarea>
-            </div>
+        <details class="profile-advanced">
+          <summary>مدیریت خریداران ذخیره‌شده</summary>
+          <div class="profile-buttons">
+            <button class="profile-btn primary-soft" id="newBuyerProfileBtn" type="button">خریدار جدید</button>
+            <button class="profile-btn" id="saveBuyerProfileBtn" type="button">ذخیره اطلاعات فعلی</button>
+            <button class="profile-btn" id="updateBuyerProfileBtn" type="button" disabled>به‌روزرسانی</button>
+            <button class="profile-btn danger" id="deleteBuyerProfileBtn" type="button" disabled>حذف</button>
           </div>
         </details>
-
-      </div>
-
-      <div class="stamp-tools">
-        <div class="stamp-tools-head">
-          <strong id="stampPanelTitle" style="font-size:10.5px">مهر و امضای پیش‌فاکتور</strong>
-          <span class="stamp-status" id="stampStatus">مهر ذخیره نشده</span>
-        </div>
-        <div class="stamp-actions">
-          <button class="profile-btn" id="uploadStampBtn" type="button">انتخاب و ذخیره مهر</button>
-          <button class="profile-btn danger" id="removeStampBtn" type="button" disabled>حذف مهر</button>
-        </div>
-        <input id="stampFileInput" type="file" accept="image/png,image/jpeg,image/webp" hidden />
-        <span class="profile-help" id="stampHelpText">مهر پیش‌فاکتور فقط روی همین دستگاه ذخیره می‌شود و داخل GitHub قرار نمی‌گیرد.</span>
-      </div>
-
-      <div class="field checkbox-field">
-        <label class="checkbox-label" for="sellerStampEnabled">
-          <input id="sellerStampEnabled" type="checkbox" disabled />
-          <span id="stampToggleText">نمایش تصویر مهر و امضا در خروجی پیش‌فاکتور</span>
-        </label>
       </div>
 
       <div class="items-title">
@@ -864,10 +1124,9 @@
         <textarea id="generalNotes" placeholder="در صورت نیاز، توضیحات کلی پیش‌فاکتور را وارد کنید؛ فقط اگر این بخش پر شود در خروجی نمایش داده می‌شود."></textarea>
       </div>
 
-      <div class="actions">
-        <button class="btn primary" id="pdfBtn" type="button">ساخت و ذخیره PDF</button>
-        <button class="btn secondary" id="printBtn" type="button">چاپ / Save as PDF</button>
-        <button class="btn ghost" id="resetBtn" type="button">بازنشانی فرم فعلی</button>
+      <div class="actions simple-actions">
+        <button class="btn secondary" id="previewBtn" type="button">مشاهده پیش‌نمایش</button>
+        <button class="btn primary" id="pdfBtn" type="button">ساخت PDF</button>
       </div>
       <p class="hint">
         در آیفون، دکمه اصلی فایل PDF واقعی را از طریق پنجره اشتراک سیستم آماده می‌کند؛ گزینه «Save to Files» یا تلگرام را انتخاب کنید. دکمه سه‌نقطه بالای Mini App فقط لینک صفحه را به اشتراک می‌گذارد، نه فایل PDF. اگر اشتراک فایل پشتیبانی نشد، پیش‌نمایش PDF باز می‌شود.
@@ -875,7 +1134,104 @@
     </div>
   </section>
 
-  <section class="preview-shell">
+  <div class="settings-modal" id="settingsModal" hidden>
+    <div class="settings-backdrop" id="settingsBackdrop"></div>
+    <section class="settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settingsDialogTitle">
+      <header class="settings-dialog-head">
+        <div>
+          <h2 id="settingsDialogTitle">تنظیمات</h2>
+          <p>اطلاعات فروشنده، مهر و ابزارهای برنامه</p>
+        </div>
+        <button class="settings-close-btn" id="settingsCloseBtn" type="button" aria-label="بستن تنظیمات">×</button>
+      </header>
+
+      <div class="settings-dialog-body">
+        <section class="settings-section invoice-only">
+          <div class="settings-section-head">
+            <strong>اطلاعات فروشنده</strong>
+            <span>یک‌بار ذخیره کنید و دفعات بعد انتخاب کنید.</span>
+          </div>
+          <div class="profile-manager">
+            <label for="sellerProfileSelect">فروشنده ذخیره‌شده</label>
+            <div class="profile-select-row">
+              <select id="sellerProfileSelect">
+                <option value="">انتخاب خریدار ذخیره‌شده</option>
+              </select>
+              <button class="profile-btn primary-soft" id="newSellerProfileBtn" type="button">فروشنده جدید</button>
+            </div>
+            <div class="profile-buttons">
+              <button class="profile-btn" id="saveSellerProfileBtn" type="button">ذخیره</button>
+              <button class="profile-btn" id="updateSellerProfileBtn" type="button" disabled>ویرایش</button>
+              <button class="profile-btn danger" id="deleteSellerProfileBtn" type="button" disabled>حذف</button>
+            </div>
+          </div>
+          <div class="field">
+            <label for="sellerName">نام شخص حقیقی/حقوقی</label>
+            <input id="sellerName" type="text" />
+          </div>
+          <div class="row-fields">
+            <div class="field"><label for="sellerEconomic">شماره اقتصادی</label><input id="sellerEconomic" type="text" inputmode="numeric" /></div>
+            <div class="field"><label for="sellerRegistration">شماره ثبت</label><input id="sellerRegistration" type="text" inputmode="numeric" /></div>
+            <div class="field"><label for="sellerPostal">کد پستی ده‌رقمی</label><input id="sellerPostal" type="text" inputmode="numeric" /></div>
+            <div class="field"><label for="sellerNational">شناسه ملی</label><input id="sellerNational" type="text" inputmode="numeric" /></div>
+          </div>
+          <div class="field"><label for="sellerPhone">شماره تماس</label><input id="sellerPhone" type="text" /></div>
+          <div class="field"><label for="sellerAddress">نشانی فروشنده</label><textarea id="sellerAddress"></textarea></div>
+        </section>
+
+        <section class="settings-section">
+          <div class="settings-section-head">
+            <strong>مهر و امضا</strong>
+            <span>برای پیش‌فاکتور و هر فروشنده جداگانه ذخیره می‌شود.</span>
+          </div>
+          <div class="stamp-tools">
+            <div class="stamp-tools-head">
+              <strong id="stampPanelTitle" style="font-size:10.5px">مهر و امضای پیش‌فاکتور</strong>
+              <span class="stamp-status" id="stampStatus">مهر ذخیره نشده</span>
+            </div>
+            <div class="stamp-actions">
+              <button class="profile-btn" id="uploadStampBtn" type="button">انتخاب و ذخیره مهر</button>
+              <button class="profile-btn danger" id="removeStampBtn" type="button" disabled>حذف مهر</button>
+            </div>
+            <input id="stampFileInput" type="file" accept="image/png,image/jpeg,image/webp" hidden />
+            <span class="profile-help" id="stampHelpText">مهر فقط روی همین دستگاه ذخیره می‌شود و داخل GitHub قرار نمی‌گیرد.</span>
+          </div>
+          <div class="field checkbox-field">
+            <label class="checkbox-label" for="sellerStampEnabled">
+              <input id="sellerStampEnabled" type="checkbox" disabled />
+              <span id="stampToggleText">نمایش تصویر مهر و امضا در خروجی پیش‌فاکتور</span>
+            </label>
+          </div>
+        </section>
+
+        <section class="settings-section">
+          <div class="settings-section-head">
+            <strong>پشتیبان و ابزارها</strong>
+            <span>انتقال اطلاعات، چاپ و بازنشانی فرم</span>
+          </div>
+          <div class="storage-card" id="storageCard">
+            <div class="storage-card-head">
+              <span class="storage-card-title">اطلاعات ذخیره‌شده</span>
+              <span class="storage-badge" id="storageBadge">در حال اتصال…</span>
+            </div>
+            <div class="storage-actions">
+              <button class="profile-btn" id="exportBackupBtn" type="button">دریافت فایل پشتیبان</button>
+              <button class="profile-btn" id="importBackupBtn" type="button">بازیابی فایل پشتیبان</button>
+            </div>
+            <input id="backupFileInput" type="file" accept="application/json,.json" hidden />
+            <span class="profile-help">داخل تلگرام، مشخصات شرکت‌ها در فضای همان حساب ذخیره می‌شود. بیرون تلگرام، ذخیره‌سازی مرورگر استفاده می‌شود.</span>
+          </div>
+          <div class="settings-actions">
+            <button class="btn secondary" id="printBtn" type="button">چاپ / Save as PDF</button>
+            <button class="btn ghost" id="resetBtn" type="button">بازنشانی فرم فعلی</button>
+          </div>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <section class="preview-shell" id="previewShell">
+    <button class="preview-close" id="closePreviewBtn" type="button">بستن پیش‌نمایش</button>
     <p class="preview-label" id="previewLabel">پیش‌نمایش زنده پیش‌فاکتور</p>
     <div class="paper-wrap portrait" id="paperWrap">
 
@@ -1014,7 +1370,7 @@
             <span id="factorTermsOut"></span>
           </div>
           <div class="factor-signatures">
-            <div class="signature-box">
+            <div class="signature-box seller-signature-disabled" id="sellerSignatureBox" aria-hidden="true">
               <div>مهر و امضاء فروشنده</div>
               <img id="sellerStampImage" class="seller-stamp" alt="مهر و امضاء فروشنده" hidden />
             </div>
@@ -1037,10 +1393,6 @@
       <button type="button" class="remove">حذف ردیف</button>
     </div>
     <div class="item-grid">
-      <div class="item-field wide invoice-only">
-        <label>کد کالا</label>
-        <input class="code" type="text" placeholder="اختیاری" />
-      </div>
       <div class="item-field wide">
         <label class="item-title-label">موضوع</label>
         <input class="title" type="text" placeholder="موضوع یا شرح کالا/خدمات" />
@@ -1057,18 +1409,30 @@
         <label>مبلغ واحد - ریال</label>
         <input class="unit grouped-number" inputmode="numeric" type="text" placeholder="فی واحد" autocomplete="off" />
       </div>
-      <div class="item-field invoice-only">
-        <label>مبلغ تخفیف - ریال</label>
-        <input class="discount grouped-number" inputmode="numeric" type="text" placeholder="۰" autocomplete="off" />
-      </div>
-      <div class="item-field invoice-only">
-        <label>مالیات و عوارض - درصد</label>
-        <input class="tax" inputmode="decimal" type="text" placeholder="۱۰" />
-      </div>
       <div class="item-field wide pish-only">
         <label>توضیحات ردیف</label>
         <textarea class="desc" placeholder="توضیحات فنی یا اجرایی"></textarea>
       </div>
+
+      <details class="item-advanced invoice-only">
+        <summary>اطلاعات بیشتر: کد کالا، تخفیف و مالیات</summary>
+        <div class="item-advanced-grid">
+          <div class="item-field wide">
+            <label>کد کالا</label>
+            <input class="code" type="text" placeholder="اختیاری" />
+          </div>
+          <div class="item-field">
+            <label>مبلغ تخفیف - ریال</label>
+            <input class="discount grouped-number" inputmode="numeric" type="text" placeholder="۰" autocomplete="off" />
+          </div>
+          <div class="item-field">
+            <label>مالیات و عوارض - درصد</label>
+            <input class="tax" inputmode="decimal" type="text" placeholder="۱۰" />
+          </div>
+        </div>
+      </details>
+
+
       <div class="row-live-total">
         <span class="row-total-label">مبلغ کل ردیف:</span>
         <strong class="row-total-value">0</strong>
@@ -1411,7 +1775,7 @@
 
   function refreshProfileSelect(type, selectedId='') {
     const select = el(type + 'ProfileSelect');
-    const firstText = type === 'seller' ? 'انتخاب فروشنده ذخیره‌شده' : 'انتخاب مشتری / خریدار ذخیره‌شده';
+    const firstText = type === 'seller' ? 'انتخاب فروشنده ذخیره‌شده' : 'انتخاب خریدار ذخیره‌شده';
     select.textContent = '';
     const first = document.createElement('option');
     first.value = '';
@@ -1466,7 +1830,7 @@
   async function createProfile(type) {
     const data = collectProfile(type);
     const name = profileName(type, data);
-    if (!name) return toast(type === 'seller' ? 'نام فروشنده را وارد کنید.' : 'نام مشتری یا خریدار را وارد کنید.', 'error');
+    if (!name) return toast(type === 'seller' ? 'نام فروشنده را وارد کنید.' : 'نام خریدار را وارد کنید.', 'error');
     const duplicate = profileCache[type].find(p => profileName(type, p).toLowerCase() === name.toLowerCase());
     if (duplicate) return toast('این نام قبلاً ذخیره شده است؛ برای تغییر از دکمه به‌روزرسانی استفاده کنید.', 'error');
 
@@ -1561,12 +1925,18 @@
     const enabled = el('sellerStampEnabled');
 
     if (currentStampData) {
+      enabled.disabled = false;
+
+      // در فاکتور فروش، مهر ذخیره‌شده به‌صورت پیش‌فرض فعال باشد.
+      if (mode === 'factor') {
+        enabled.checked = true;
+      }
+
       images.forEach(image => {
         image.src = currentStampData;
         image.hidden = !enabled.checked;
       });
-      enabled.disabled = false;
-      el('stampStatus').textContent = 'مهر ذخیره شده';
+      el('stampStatus').textContent = 'مهر ذخیره شده و فعال است';
       el('stampStatus').classList.add('ready');
       el('removeStampBtn').disabled = false;
     } else {
@@ -1633,7 +2003,10 @@
         toast('مهر پیش‌فاکتور روی همین دستگاه ذخیره شد.');
       } else {
         const sellerId = el('sellerProfileSelect').value;
-        toast(sellerId ? 'مهر برای این فروشنده ذخیره شد.' : 'مهر موقت فاکتور روی همین دستگاه ذخیره شد.');
+        toast(sellerId
+          ? 'مهر فاکتور برای این فروشنده ذخیره و فعال شد.'
+          : 'مهر فاکتور روی همین دستگاه ذخیره و فعال شد.'
+        );
       }
     } catch (error) {
       console.error(error);
@@ -1831,17 +2204,23 @@
     el('formSubtitle').textContent = isFactor
       ? 'مشخصات طرفین و اقلام را وارد کنید؛ مالیات، تخفیف و جمع نهایی خودکار محاسبه می‌شود.'
       : 'اطلاعات را وارد کنید؛ مبلغ هر ردیف و جمع کل خودکار محاسبه می‌شود.';
-    el('customerLabel').textContent = isFactor ? 'نام خریدار / شرکت' : 'نام مشتری یا شرکت';
+    el('customerLabel').textContent = 'نام خریدار';
     el('itemsHeading').textContent = isFactor ? 'اقلام فاکتور' : 'اقلام پیش‌فاکتور';
     el('notesLabel').textContent = isFactor ? 'شرایط و نحوه فروش' : 'توضیحات زیر جدول';
     el('generalNotes').placeholder = isFactor
       ? 'در صورت نیاز، شرایط پرداخت یا نحوه فروش را وارد کنید.'
       : 'در صورت نیاز، توضیحات کلی پیش‌فاکتور را وارد کنید؛ فقط اگر این بخش پر شود در خروجی نمایش داده می‌شود.';
     el('previewLabel').textContent = isFactor ? 'پیش‌نمایش زنده فاکتور' : 'پیش‌نمایش زنده پیش‌فاکتور';
-    el('stampPanelTitle').textContent = isFactor ? 'مهر و امضای این فروشنده' : 'مهر و امضای پیش‌فاکتور';
+    el('previewBtn').textContent = isFactor ? 'پیش‌نمایش فاکتور' : 'پیش‌نمایش پیش‌فاکتور';
+    el('stampPanelTitle').textContent = isFactor
+      ? 'مهر و امضای فاکتور فروش'
+      : 'مهر و امضای پیش‌فاکتور';
+    el('uploadStampBtn').textContent = isFactor
+      ? 'بارگذاری مهر و امضای فاکتور'
+      : 'بارگذاری مهر و امضای پیش‌فاکتور';
     el('stampToggleText').textContent = isFactor
-      ? 'نمایش تصویر مهر و امضای فروشنده در خروجی فاکتور'
-      : 'نمایش تصویر مهر و امضا در خروجی پیش‌فاکتور';
+      ? 'نمایش مهر و امضای فروشنده در فاکتور'
+      : 'نمایش مهر و امضا در پیش‌فاکتور';
     el('stampHelpText').textContent = isFactor
       ? 'مهر فروشنده فقط روی همین دستگاه و برای همین Mini App ذخیره می‌شود و داخل GitHub قرار نمی‌گیرد.'
       : 'مهر پیش‌فاکتور فقط روی همین دستگاه و برای همین Mini App ذخیره می‌شود و داخل GitHub قرار نمی‌گیرد.';
@@ -1910,7 +2289,7 @@
 
   function renderPish(items) {
     el('pishDateOut').textContent = formatInvoiceDate(el('invoiceDate').value) || '—';
-    el('pishCustomerOut').textContent = escText(el('customer').value) || 'نام مشتری / شرکت';
+    el('pishCustomerOut').textContent = escText(el('customer').value) || 'نام خریدار';
 
     const tbody = el('pishRows');
     tbody.textContent = '';
@@ -2005,11 +2384,27 @@
     el('sumNet').textContent = formatFa(totals.net);
     el('sumTax').textContent = formatFa(totals.tax);
     el('sumFinal').textContent = formatFa(totals.final);
-    el('sellerStampImage').hidden = !(currentStampData && el('sellerStampEnabled').checked);
+
+    const showSellerSignature = Boolean(
+      currentStampData && el('sellerStampEnabled').checked
+    );
+    el('sellerStampImage').hidden = !showSellerSignature;
+    el('sellerSignatureBox').classList.toggle(
+      'seller-signature-disabled',
+      !showSellerSignature
+    );
+    el('sellerSignatureBox').setAttribute(
+      'aria-hidden',
+      showSellerSignature ? 'false' : 'true'
+    );
   }
 
   function render() {
     if (loading) return;
+    const buyerNameDetail = el('buyerNameDetail');
+    if (buyerNameDetail && buyerNameDetail.value !== el('customer').value) {
+      buyerNameDetail.value = el('customer').value;
+    }
     const items = collectItems();
     renderFormCheck(items);
     if (mode === 'factor') renderFactor(items);
@@ -2017,7 +2412,7 @@
   }
 
   function fileName(extension='pdf') {
-    const safeCustomer = (el('customer').value || 'مشتری')
+    const safeCustomer = (el('customer').value || 'خریدار')
       .replace(/[\/:*?"<>|]+/g, '-')
       .trim();
     const safeDate = formatInvoiceDate(el('invoiceDate').value || '').replace(/\//g, '-');
@@ -2167,8 +2562,43 @@
     window.print();
   }
 
+  function openPreview() {
+    render();
+    const mobileLayout = window.matchMedia('(max-width: 1180px)').matches;
+    if (mobileLayout) {
+      body.classList.add('preview-open');
+      el('previewShell').scrollTop = 0;
+      if (tg?.expand) tg.expand();
+      return;
+    }
+    el('previewShell').scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function closePreview() {
+    body.classList.remove('preview-open');
+  }
+
+  function openSettings() {
+    const modal = el('settingsModal');
+    modal.hidden = false;
+    body.classList.add('settings-open');
+    requestAnimationFrame(() => el('settingsCloseBtn').focus());
+  }
+
+  function closeSettings() {
+    const modal = el('settingsModal');
+    modal.hidden = true;
+    body.classList.remove('settings-open');
+    el('settingsOpenBtn').focus();
+  }
+
   fieldIds.forEach(id => {
     el(id).addEventListener('input', render);
+  });
+
+  el('buyerNameDetail').addEventListener('input', () => {
+    el('customer').value = el('buyerNameDetail').value;
+    render();
   });
 
   el('invoiceDate').addEventListener('blur', () => {
@@ -2177,8 +2607,8 @@
   });
   el('sellerStampEnabled').addEventListener('change', render);
 
-  el('modePish').addEventListener('click', () => switchMode('pish'));
-  el('modeFactor').addEventListener('click', () => switchMode('factor'));
+  el('modePish').addEventListener('click', () => { closePreview(); switchMode('pish'); });
+  el('modeFactor').addEventListener('click', () => { closePreview(); switchMode('factor'); });
   el('addRow').addEventListener('click', () => addItem(mode === 'factor'
     ? {measure:'عدد', discount:'0', tax:'10'}
     : {discount:'0', tax:'0'}
@@ -2191,15 +2621,36 @@
     loadState(mode);
     updateModeUI();
     render();
+    closeSettings();
   });
 
+  el('previewBtn').addEventListener('click', openPreview);
+  el('closePreviewBtn').addEventListener('click', closePreview);
+  el('settingsOpenBtn').addEventListener('click', openSettings);
+  el('settingsCloseBtn').addEventListener('click', closeSettings);
+  el('settingsBackdrop').addEventListener('click', closeSettings);
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    if (!el('settingsModal').hidden) {
+      closeSettings();
+      return;
+    }
+    closePreview();
+  });
   el('pdfBtn').addEventListener('click', downloadPdf);
   el('printBtn').addEventListener('click', printDocument);
 
   el('sellerProfileSelect').addEventListener('change', () => chooseProfile('seller'));
-  el('buyerProfileSelect').addEventListener('change', () => chooseProfile('buyer'));
+  el('buyerProfileSelect').addEventListener('change', async () => {
+    await chooseProfile('buyer');
+    if (el('buyerProfileSelect').value) el('buyerDetails').open = true;
+  });
   el('newSellerProfileBtn').addEventListener('click', () => clearProfileForm('seller'));
-  el('newBuyerProfileBtn').addEventListener('click', () => clearProfileForm('buyer'));
+  el('newBuyerProfileBtn').addEventListener('click', () => {
+    clearProfileForm('buyer');
+    el('buyerDetails').open = true;
+    requestAnimationFrame(() => el('buyerNameDetail').focus());
+  });
   el('saveSellerProfileBtn').addEventListener('click', () => createProfile('seller'));
   el('saveBuyerProfileBtn').addEventListener('click', () => createProfile('buyer'));
   el('updateSellerProfileBtn').addEventListener('click', () => updateProfile('seller'));
