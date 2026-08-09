@@ -1,4 +1,4 @@
-<!doctype html>
+  <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="utf-8" />
@@ -410,8 +410,20 @@
   .pish-table .col-total { width:19%; }
   .pish-table .col-desc { width:27%; }
   .pish-table tfoot td { font-weight:800; font-size:11pt; padding:1.5mm 2mm; }
-  .pish-table tfoot .sum-label { text-align:center; letter-spacing:.7mm; }
-  .pish-table tfoot .sum-value { text-align:center; direction:ltr; }
+  .pish-table tfoot .sum-label {
+    text-align:center;
+    letter-spacing:0;
+    white-space:nowrap;
+    direction:rtl;
+    unicode-bidi:isolate;
+  }
+  .pish-table tfoot .sum-value {
+    text-align:center;
+    direction:ltr;
+    unicode-bidi:isolate;
+    white-space:nowrap;
+    font-variant-numeric:tabular-nums;
+  }
   .empty-note { color:#8a8a8a; font-weight:400 !important; }
   .pish-general-notes {
     display:none;
@@ -898,7 +910,7 @@
             <tbody id="pishRows"></tbody>
             <tfoot>
               <tr>
-                <td class="sum-label" colspan="3">جــــمــــــع کــــل</td>
+                <td class="sum-label" colspan="3">جمع کل</td>
                 <td class="sum-value" colspan="3" id="pishGrandTotal">۰</td>
               </tr>
             </tfoot>
@@ -1181,7 +1193,11 @@
   }
 
   function formatFa(value) {
-    return Math.round(value || 0).toLocaleString('fa-IR');
+    // جداکنندهٔ سه‌رقمی ثابت و سازگار با PDF آیفون؛
+    // ارقام فارسی می‌مانند اما جداکننده، ویرگول استاندارد است.
+    return Math.round(value || 0)
+      .toLocaleString('en-US')
+      .replace(/\d/g, digit => faDigits[Number(digit)]);
   }
 
   function formatEn(value) {
