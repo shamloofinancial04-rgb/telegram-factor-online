@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#c87939" />
+  <title>فاکتورساز شیما</title>
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Telegram Mini App API -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- PDF generation in the browser -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+  <main class="app-shell">
+    <section class="form-card">
+      <div class="section-title">
+        <div>
+          <h1>فاکتورساز ساده</h1>
+          <p>اطلاعات را وارد کن؛ پیش‌نمایش هم‌زمان ساخته می‌شود.</p>
+        </div>
+        <span class="badge">آزمایشی</span>
+      </div>
+
+
+      <div class="items-header seller-info-title">
+        <h2>اطلاعات فروشنده</h2>
+      </div>
+
+      <div class="grid two">
+        <label>
+          <span>نام مجموعه</span>
+          <input id="sellerBusinessNameInput" type="text" value="گالری ورونیکا" />
+        </label>
+
+        <label>
+          <span>نام مدیریت</span>
+          <input id="sellerManagerInput" type="text" value="احمد موسوی" />
+        </label>
+
+        <label>
+          <span>شماره تماس</span>
+          <input id="sellerPhoneInput" type="text" inputmode="tel" value="۰۹۱۲۰۰۰۰۰۰۰" />
+        </label>
+
+        <label>
+          <span>فونت فاکتور</span>
+          <select id="invoiceFontSelect">
+            <option value="vazirmatn" selected>وزیرمتن</option>
+            <option value="tahoma">تاهوما</option>
+            <option value="arial">آریال</option>
+          </select>
+        </label>
+
+        <label class="full-width">
+          <span>آدرس</span>
+          <textarea id="sellerAddressInput" rows="2">تهران، بازار گل غرب تهران، جنت‌آباد شمالی، خیابان شعرا، سالن یک، غرفه ۶</textarea>
+        </label>
+      </div>
+
+      <div class="grid two">
+        <label>
+          <span>نام مشتری</span>
+          <input id="customerName" type="text" placeholder="مثلاً بانک ملی، جناب کفاشی" />
+        </label>
+
+        <label>
+          <span>تاریخ</span>
+          <input id="invoiceDate" type="text" />
+        </label>
+      </div>
+
+      <div class="items-header">
+        <h2>اقلام فاکتور</h2>
+        <button id="addItemBtn" type="button" class="secondary-button">＋ افزودن قلم</button>
+      </div>
+
+      <div id="itemsContainer"></div>
+
+      <div class="grid two totals-inputs">
+        <label>
+          <span>هزینه ارسال (تومان)</span>
+          <input id="deliveryCost" type="text" inputmode="numeric" value="0" />
+        </label>
+
+        <label>
+          <span>تخفیف (تومان)</span>
+          <input id="discount" type="text" inputmode="numeric" value="0" />
+        </label>
+      </div>
+
+      <div class="items-header banking-title">
+        <h2>اطلاعات بانکی</h2>
+      </div>
+
+      <div class="grid two">
+        <label>
+          <span>نام صاحب حساب</span>
+          <input id="accountHolderInput" type="text" value="سید احمد موسوی" />
+        </label>
+
+        <label>
+          <span>شماره کارت</span>
+          <input id="cardNumberInput" type="text" inputmode="numeric" value="5022 - 2913 - 4119 - 2845" />
+        </label>
+
+        <label>
+          <span>شماره شبا</span>
+          <input id="ibanInput" type="text" value="IR16 0570 0403 8002 7522 9051 01" />
+        </label>
+      </div>
+
+      <label>
+        <span>توضیحات</span>
+        <textarea id="description" rows="3" placeholder="توضیح اختیاری برای پایین فاکتور"></textarea>
+      </label>
+
+      <div class="actions">
+        <button id="generatePdfBtn" type="button" class="primary-button">دانلود فاکتور PDF</button>
+        <button id="resetBtn" type="button" class="ghost-button">پاک‌کردن فرم</button>
+      </div>
+
+      <p id="statusMessage" class="status" aria-live="polite"></p>
+    </section>
+
+    <section class="preview-wrapper">
+      <div class="preview-label">پیش‌نمایش فاکتور</div>
+
+      <article id="invoice" class="invoice">
+        <header class="invoice-header">
+          <div class="seller-copy">
+            <h2 id="sellerBusinessName">گالری ورونیکا</h2>
+            <p id="sellerManager">مدیریت: احمد موسوی</p>
+            <p id="sellerPhone">شماره تماس: ۰۹۱۲۰۰۰۰۰۰۰</p>
+            <p id="sellerAddress">آدرس: تهران، بازار گل غرب تهران، جنت‌آباد شمالی، خیابان شعرا، سالن یک، غرفه ۶</p>
+          </div>
+
+          <div class="logo-box" aria-label="محل لوگو">
+            <span>LOGO</span>
+          </div>
+        </header>
+
+        <section class="invoice-meta">
+          <div class="customer-line">
+            <span>نام مشتری:</span>
+            <strong id="previewCustomer">—</strong>
+          </div>
+
+          <div class="meta-row">
+            <div>
+              <span>شماره فاکتور:</span>
+              <strong id="invoiceNumber">۱</strong>
+            </div>
+            <div>
+              <span>تاریخ:</span>
+              <strong id="previewDate">—</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="invoice-table-wrap">
+          <table class="invoice-table">
+            <thead>
+              <tr>
+                <th>عنوان</th>
+                <th>مقدار</th>
+                <th>واحد</th>
+                <th>مبلغ واحد</th>
+                <th>مبلغ کل</th>
+              </tr>
+            </thead>
+            <tbody id="previewItems"></tbody>
+          </table>
+        </section>
+
+        <section class="summary">
+          <div class="summary-row">
+            <span>جمع اقلام</span>
+            <strong id="subtotalText">۰ تومان</strong>
+          </div>
+          <div class="summary-row">
+            <span>هزینه ارسال</span>
+            <strong id="deliveryText">۰ تومان</strong>
+          </div>
+          <div class="summary-row">
+            <span>تخفیف</span>
+            <strong id="discountText">۰ تومان</strong>
+          </div>
+        </section>
+
+        <section class="grand-total">
+          <span>جمع کل</span>
+          <strong id="grandTotalText">۰ تومان</strong>
+          <small id="grandTotalWords"></small>
+        </section>
+
+        <section class="payment-box">
+          <div>
+            <span>نام صاحب حساب</span>
+            <strong id="accountHolder">سید احمد موسوی</strong>
+          </div>
+          <div>
+            <span>شماره کارت</span>
+            <strong dir="ltr" id="cardNumber">5022 - 2913 - 4119 - 2845</strong>
+          </div>
+          <div>
+            <span>شماره شبا</span>
+            <strong dir="ltr" id="iban">IR16 0570 0403 8002 7522 9051 01</strong>
+          </div>
+        </section>
+
+        <p id="previewDescription" class="invoice-description"></p>
+
+        <footer class="invoice-footer">
+          <div class="signature-block">
+            <img
+              id="signatureStampImage"
+              class="signature-stamp-image"
+              src="assets/signature-stamp.jpg"
+              alt="امضا و مهر فروشنده"
+            />
+            <div class="signature-label">امضا و مهر فروشنده</div>
+          </div>
+          <div class="thank-you">با سپاس از اعتماد شما</div>
+        </footer>
+      </article>
+    </section>
+  </main>
+
+  <template id="itemTemplate">
+    <div class="item-card">
+      <div class="item-card-head">
+        <strong class="item-index">قلم ۱</strong>
+        <button type="button" class="remove-item" aria-label="حذف قلم">حذف</button>
+      </div>
+
+      <label>
+        <span>عنوان کالا یا خدمت</span>
+        <input class="item-title" type="text" placeholder="مثلاً سبد گل" />
+      </label>
+
+      <div class="grid three">
+        <label>
+          <span>تعداد</span>
+          <input class="item-quantity" type="text" inputmode="decimal" value="1" />
+        </label>
+
+        <label>
+          <span>واحد</span>
+          <input class="item-unit" type="text" value="عدد" />
+        </label>
+
+        <label>
+          <span>قیمت واحد (تومان)</span>
+          <input class="item-price" type="text" inputmode="numeric" value="0" />
+        </label>
+      </div>
+    </div>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
